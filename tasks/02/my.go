@@ -3,7 +3,7 @@ package main
 import "fmt"
 
 func bufferLog(log chan string, logIndex int) chan string {
-	bufferedLog := make(chan string, 1024)
+	bufferedLog := make(chan string, 100)
 	go func(bufferedLog chan string, log chan string) {
 		for message := range log {
 			bufferedLog <- fmt.Sprintf("%d\t%s", logIndex, message)
@@ -14,7 +14,7 @@ func bufferLog(log chan string, logIndex int) chan string {
 }
 
 func bufferLogs(logs chan (chan string)) chan (chan string) {
-	bufferedLogs := make(chan (chan string), 1024)
+	bufferedLogs := make(chan (chan string), 100)
 	go func(bufferedLogs chan (chan string), logs chan (chan string)) {
 		var logIndex int
 		for log := range logs {
